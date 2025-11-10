@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include "utils.h"
+#include "../include/utils.h"
+
 int fileKosong (const char*namaFile){
     FILE *fp = fopen ("alat.txt", "r");
     if (fp == NULL){
@@ -40,7 +40,7 @@ int cariAlatById(unsigned int id, Alat *out) {
     }
 }
 
-    int updateJumlahAlat(unsigned int id, int perubahan){
+int updateJumlahAlat(unsigned int id, int perubahan){
         FILE*fp = fopen ("alat.txt", "r");
         if (fp == NULL){
             return 0;
@@ -80,7 +80,7 @@ int cariAlatById(unsigned int id, Alat *out) {
         return found ? 1 : 0;
     }
 
-    void hapusBarisById(const char *namaFile, unsigned int idHapus) {
+void hapusBarisById(const char *namaFile, unsigned int idHapus) {
     FILE *fp = fopen(namaFile, "r");
     if (fp == NULL) {
         printf("File tidak ditemukan.\n");

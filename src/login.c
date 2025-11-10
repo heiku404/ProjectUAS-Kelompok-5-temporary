@@ -1,46 +1,48 @@
-#include <stdio.h>
-#include <string.h>
+#include "../include/utils.h"
 
-int main(int argc, char *argv[]) {
-    FILE *file;
-    char usernameFile[20], passwordFile[20], roleFile[20];
-    char username[20], password[20];
-    int loginBerhasil = 0;
+int login(char *username, char *password)
+{
+    char temp_username[maxSize];
+    char temp_password[maxSize];
 
-    // Cek input dari command line
-    if (argc < 3) {
-        printf("Cara pakai: %s <username> <password>\n", argv[0]);
-        return 1;
+    FILE *fptr;
+    fptr = fopen("admin.txt", "r");
+
+    if (fptr == NULL)
+    {
+        printf("Error : file admin.txt tidak ditemukan\n");
+        return 0;
     }
 
-    // Ambil username dan password
-    strcpy(username, argv[1]);
-    strcpy(password, argv[2]);
-
-    // Buka file akun.txt
-    file = fopen("akun.txt", "r");
-    if (file == NULL) {
-        printf("File akun.txt tidak ditemukan!\n");
-        return 1;
-        }
-
-    // Baca file baris per baris
-    while (fscanf(file, "%s %s %s", usernameFile, passwordFile, roleFile) != EOF) {
-        // Cek apakah cocok
-        if (strcmp(username, usernameFile) == 0 && strcmp(password, passwordFile) == 0) {
-            printf("Login berhasil! Anda adalah %s\n", roleFile);
-            loginBerhasil = 1;
-            break;
+    while (fscanf(fptr, "%s %s", temp_username, temp_password) == 2)
+    {
+        if (strcmp(username, temp_username) == 0 && strcmp(password, temp_password) == 0)
+        {
+            fclose(fptr);
+            return 1;
         }
     }
 
-    // Tutup file
-    fclose(file);
+    fclose(fptr);
 
-    // Jika tidak berhasil
-    if (loginBerhasil == 0) {
-        printf("Login gagal! Username atau password salah.\n");
+    fptr = fopen("user.txt", "r");
+
+    if (fptr == NULL)
+    {
+        printf("Error : file admin.txt tidak ditemukan\n");
+        return 0;   
     }
 
+    while (fscanf(fptr, "%s %s", temp_username, temp_password) == 2)
+    {
+        if (strcmp(username, temp_username) == 0 && strcmp(password, temp_password) == 0)
+        {
+            fclose(fptr);
+            return 2;
+        }
+    }
+    fclose(fptr);
+
+    printf("Login failed\n, username atau password yang dimasukkan salah\n");
     return 0;
 }
